@@ -8,7 +8,7 @@ MIN_BET = 1
 ROWS = 3
 COLS = 3
 
-symbols_count = {
+symbol_count = {
     "A": 2,
     "B": 4,
     "C": 6,
@@ -39,11 +39,14 @@ def get_slot_machine_spin(rows, cols, symbols): # What symbols are going to be o
 # transposing = matrix
 def print_slot_machine(columns):
     for row in range(len(columns[0])): # determine number of rows(elements = verticle spaces) that we have based on our colums
-      for i, column in enumerate (columns): # looping through all items that are inside "columns"
-        if i != len(columns) - 1: # if we are not on the last column, then we want to print a "|" after the 
-            print(column[row], "|")
-        else:
-            print(column[row])
+        for i, column in enumerate (columns): # looping through all items that are inside "columns"
+            if i != len(columns) - 1: # if we are not on the last column, then we want to print a "|" after the 
+                print(column[row], end = " | ")
+            else:
+                print(column[row], end = "")
+
+
+        print() 
 
 
 def deposit():
@@ -105,5 +108,7 @@ def main():
             break
     print(
         f"You are betting ${bet} on {lines} lines. Total bet is equal to: ${total_bet}")
-  
+    
+    slots = get_slot_machine_spin(ROWS, COLS, symbol_count)
+    print_slot_machine(slots)
 main()
