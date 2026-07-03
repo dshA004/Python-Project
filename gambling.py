@@ -22,21 +22,23 @@ def get_slot_machine_spin(rows, cols, symbols): # What symbols are going to be o
         for _ in range(symbol_count):
             all_symbols.append(symbol)
 
-    columns = [[], [], []]
+    columns = []
     for _ in range(cols): # If cols = 3, then this loop will run 3 times
         column = []
         current_symbols = all_symbols[:]
         for _ in range(rows):
-            value = random.choice(current_symbols)
-            current_symbols.remove(value)
-            column.append(value)
+            value = random.choice(current_symbols) # once we pick a value, we need to remove it from the list of available symbols so that we don't pick it again
+            current_symbols.remove(value) # find the first instant of this value from the list and get rid of it 
+            column.append(value) #  add "value" to "column"
 
         columns.append(column)
 
 
     return columns
 
-            
+
+
+      
         
 
 
