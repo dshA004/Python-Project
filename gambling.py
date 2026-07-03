@@ -36,10 +36,14 @@ def get_slot_machine_spin(rows, cols, symbols): # What symbols are going to be o
 
     return columns
 
-
-
-      
-        
+# transposing = matrix
+def print_slot_machine(columns):
+    for row in range(len(columns[0])): # determine number of rows(elements = verticle spaces) that we have based on our colums
+      for i, column in enumerate (columns): # looping through all items that are inside "columns"
+        if i != len(columns) - 1: # if we are not on the last column, then we want to print a "|" after the 
+            print(column[row], "|")
+        else:
+            print(column[row])
 
 
 def deposit():
