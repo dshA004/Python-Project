@@ -15,6 +15,31 @@ symbol_count = {
     "D": 8
 }
 
+
+symbol_value = {
+    "A": 5,
+    "B": 4,
+    "C": 3,
+    "D": 2
+}
+
+def check_winnings(columns, lines, bet, values):
+    winnings = 0
+    winning_lines = []
+    for line in range(lines): # looping in every row
+        symbol = columns[0][lines] # check the first symbol in the first column of the current row
+        for column in columns: # now loop through every column
+            symbol_to_check = column[line] # symbol to check is equal to check at the current row
+            if symbol != symbol_to_check: # if not the same, we break line then go check the next line
+                break
+            else: 
+                winnings += values[symbol] * bet # bet on each line, not the total bet
+                winning_lines.append(line + 1)
+
+    return winnings, winning_lines
+
+
+
 def get_slot_machine_spin(rows, cols, symbols): # What symbols are going to be on each column based on the frequancy of symbols that we have above 
     # number of rows inside each column
     all_symbols = []
@@ -111,4 +136,8 @@ def main():
     
     slots = get_slot_machine_spin(ROWS, COLS, symbol_count)
     print_slot_machine(slots)
+    winnings, winning_lines = check_winnings(slots, lines, bet, symbol_value)
+    print(f"You won ${winnings}.")
+    print(f"You won on lines:", *winning_lines)
+
 main()
