@@ -15,15 +15,15 @@ symbols_count = {
     "D": 8
 }
 
-
-def get_slot_machine_spin(rows, cols, symbols):
+def get_slot_machine_spin(rows, cols, symbols): # What symbols are going to be on each column based on the frequancy of symbols that we have above 
+    # number of rows inside each column
     all_symbols = []
-    for symbol, symbol_count in symbols.items():
+    for symbol, symbol_count in symbols.items(): # symbol = "A", symbol_count = 2
         for _ in range(symbol_count):
             all_symbols.append(symbol)
 
     columns = [[], [], []]
-    for _ in range(cols):
+    for _ in range(cols): # If cols = 3, then this loop will run 3 times
         column = []
         current_symbols = all_symbols[:]
         for _ in range(rows):
