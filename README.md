@@ -27,21 +27,17 @@ Deposit virtual money, choose how many lines to bet on, and see if you win
 
 
 
-🖥️ Demo???
-
 🚀 Running It Locally
-python main.py
+gambling.py
 
 
 🌐 Try It Online
 
-Streamlit Link:
 
 
 
 🔧 Possible Improvements
-
-
+Streamlit
 Add a GUI or web interface
 Add more paylines (diagonals)
 Add persistent balance saving between sessions
