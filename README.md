@@ -1,4 +1,5 @@
-This is a modified version of Tech With Tim from his video from: [Tech With Tim](https://www.youtube.com/@TechWithTim) 
+Project from:
+Tech With Tim: [Tech With Tim](https://www.youtube.com/@TechWithTim) 
 
 GitHub Repository: https://github.com/techwithtim
 
