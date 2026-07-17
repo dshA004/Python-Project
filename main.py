@@ -1,4 +1,5 @@
 import random
+import streamlit as st
 
 MAX_LINES = 3 
 MAX_BET = 100
@@ -23,6 +24,14 @@ symbol_value = {
     "D": 2
 }
 
+SYMBOL_EMOJI = {
+    "A": "🍒",
+    "B": "🍋",
+    "C": "🔔",
+    "D": "⭐"
+}
+
+
 def check_winnings(columns, lines, bet, values):
     winnings = 0
     winning_lines = []
@@ -32,9 +41,9 @@ def check_winnings(columns, lines, bet, values):
             symbol_to_check = column[line] # symbol to check is equal to check at the current row
             if symbol != symbol_to_check: # if not the same, we break line then go check the next line
                 break
-            else: 
-                winnings += values[symbol] * bet # bet on each line, not the total bet
-                winning_lines.append(line + 1)
+        else: 
+            winnings += values[symbol] * bet # bet on each line, not the total bet
+            winning_lines.append(line + 1)
 
     return winnings, winning_lines
 
@@ -62,16 +71,14 @@ def get_slot_machine_spin(rows, cols, symbols): # What symbols are going to be o
     return columns
 
 # transposing = matrix
-def print_slot_machine(columns):
-    for row in range(len(columns[0])): # determine number of rows(elements = verticle spaces) that we have based on our colums
-        for i, column in enumerate (columns): # looping through all items that are inside "columns"
-            if i != len(columns) - 1: # if we are not on the last column, then we want to print a "|" after the 
-                print(column[row], end = " | ")
-            else:
-                print(column[row], end = "")
+ def render_slots(columns):
+    grid_text = ""
+    for row in range(len(columns[0])):
+        row_symbols = [SYMBOL_EMOJI[column[row]] for column in columns]
+        grid_text += " | ".join(row_symbols) + "\n\n"
+    st.text(grid_text)
 
 
-        print() 
 
 
 def deposit():
