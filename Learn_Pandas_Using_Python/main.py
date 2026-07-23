@@ -5,3 +5,4 @@ import pandas as pd
 #  series = 1D labeled array (like a column)
 df = pd.read_csv("orders.csv")
 print(df)
+
