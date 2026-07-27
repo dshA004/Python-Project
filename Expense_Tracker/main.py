@@ -11,6 +11,8 @@ st.set_page_config(page_title="Expense Tracker", page_icon="💰", layout="wide"
 def load_transactions(file):
     try:
         df = pd.read_csv(file)
+        df.columns = [col.strip() for col in df.columns]
+        df["Amount"]
         st.write(df)
     except Exception as e:
         st.error(f"Error processing file: {str(e)}")
