@@ -6,8 +6,29 @@ import os
 
 
 st.set_page_config(page_title="Expense Tracker", page_icon="💰", layout="wide")
-
 # st.write("Hello World")
+
+
+# CATEGORIZING TRANSACTION:: - allow user to manually create various categories
+
+
+category_file = "categories.json"
+# when refresh streamlit, we use lose anything that weren't explicitly stored in state
+if "categories" not in st.session_state: # create a new state called "categories" to store all categories created by user so when refresh streamlit we don't lose any information
+    st.session_state.categories = {
+        "Uncategoried": []
+        # "New_catogory": []
+    }
+
+if os.path.exists("category_file"):
+    with open("category_file", "r") as f:
+        st.session_state.categories = json.load(f)
+
+
+def save_categories():
+    with open("category_file", "w") as f:
+        json.dump(st.session_state.categories, f)
+
 
 def load_transactions(file):
     try:
@@ -16,7 +37,6 @@ def load_transactions(file):
         df["Amount"] = df["Amount"].str.replace(",", "").astype(float)
         df["Date"] = pd.to_datetime(df["Date"], format="%d %b %Y")
 
-        st.write(df)
         return df
     except Exception as e:
         st.error(f"Error processing file: {str(e)}")
@@ -36,6 +56,18 @@ def main():
 
             tab1, tab2 = st.tabs(["Expenses (Debits)", "Payments (Credits)"])
             with tab1: 
+                # Add new chosen category
+                new_category = st.text_input("New Category Name")
+                add_button = st.button("Add Category")
+
+
+                if add_button and new_category:
+                    if new_category not in st.session_state.categories:
+                        st.session_state.categories[new_category] = []
+                        save_categories()
+                        st.rerun()
+
+
                 st.write(debits_df)
 
             with tab2:
