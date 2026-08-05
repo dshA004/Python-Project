@@ -30,6 +30,24 @@ def save_categories():
         json.dump(st.session_state.categories, f)
 
 
+def categorize_transactions(df):
+    df["Category"] = "Uncategories"
+
+    for category, keywords in st.session_state.categories.items():
+        if category == "Uncategorized" or not keywords:
+            continue
+
+        lowered_keywords = [keyword.lower().strip() for keyword in keywords]
+
+        for idx, row in df.iterrows():
+            details = row["Details"].lower()
+            if details in lowered_keywords:
+                df.at[idx, "Category"] =  category
+
+        return df
+
+
+
 def load_transactions(file):
     try:
         df = pd.read_csv(file)
