@@ -16,22 +16,22 @@ category_file = "categories.json"
 # when refresh streamlit, we use lose anything that weren't explicitly stored in state
 if "categories" not in st.session_state: # create a new state called "categories" to store all categories created by user so when refresh streamlit we don't lose any information
     st.session_state.categories = {
-        "Uncategoried": []
+        "Uncategorized": []
         # "New_catogory": []
     }
 
-if os.path.exists("category_file"):
-    with open("category_file", "r") as f:
+if os.path.exists(category_file):
+    with open(category_file, "r") as f:
         st.session_state.categories = json.load(f)
 
 
 def save_categories():
-    with open("category_file", "w") as f:
+    with open(category_file, "w") as f:
         json.dump(st.session_state.categories, f)
 
 
 def categorize_transactions(df):
-    df["Category"] = "Uncategories"
+    df["Category"] = "Uncategorized"
 
     for category, keywords in st.session_state.categories.items():
         if category == "Uncategorized" or not keywords:
@@ -40,11 +40,11 @@ def categorize_transactions(df):
         lowered_keywords = [keyword.lower().strip() for keyword in keywords]
 
         for idx, row in df.iterrows():
-            details = row["Details"].lower()
+            details = row["Details"].lower().strip()
             if details in lowered_keywords:
                 df.at[idx, "Category"] =  category
 
-        return df
+    return df
 
 
 
@@ -55,7 +55,7 @@ def load_transactions(file):
         df["Amount"] = df["Amount"].str.replace(",", "").astype(float)
         df["Date"] = pd.to_datetime(df["Date"], format="%d %b %Y")
 
-        return df
+        return categorize_transactions(df)
     except Exception as e:
         st.error(f"Error processing file: {str(e)}")
         return None
@@ -72,6 +72,9 @@ def main():
             debits_df = df[df["Debit/Credit"] == "Debit"].copy()
             credits_df = df[df["Debit/Credit"] == "Credit"].copy()
 
+            st.session_state.debits_df = debits_df.copy()
+
+
             tab1, tab2 = st.tabs(["Expenses (Debits)", "Payments (Credits)"])
             with tab1: 
                 # Add new chosen category
@@ -86,7 +89,29 @@ def main():
                         st.rerun()
 
 
-                st.write(debits_df)
+                st.subheader("Your Expenses")
+                edited_df = st.data_editor (
+                    st.session_state.debits_df[["Date", "Details", "Amount", "Category"]],
+                    column_config = {
+                        "Date": st.column_config.DateColumn("Date", format = "DD/MM/YYYY"),
+                        "Amount": st.column_config.NumberColumn("Amount", format = "%.2f AED"),
+                        "Category": st.column_config.SelectboxColumn(
+                            "Category",
+                            options = list(st.session_state.categories.keys())
+                        )
+                    },
+                    hide_index = True,
+                    use_container_width = True,
+                    key = "category_editor"
+                )
+
+                save_button = st.button("Apply Changes", type="primary")
+                if save_button:
+                    pass
+
+
+
+                # st.write(debits_df)
 
             with tab2:
                 st.write(credits_df)
