@@ -60,6 +60,17 @@ def load_transactions(file):
         st.error(f"Error processing file: {str(e)}")
         return None
 
+
+def add_keyword_to_category(category, keyword):
+    keyword = keyword.strip()
+    if keyword == keyword not in st.session_state.categories[category]:
+        st.session_state.categories[category].append(keyword)
+        save_categories()
+        return True
+
+    return False
+
+
 def main():
     st.title("Expense Dashboard")
 
@@ -112,6 +123,10 @@ def main():
                         new_category = row["Category"]
                         if new_category == st.session_state.debits_df.at[idx, "Category"]:
                             continue
+
+                        details = row["Details"]
+                        st.session_state.debits_df.at[idx, "Category"] = new_category
+                        add_keyword_to_category(new_category, details)
 
 
 
