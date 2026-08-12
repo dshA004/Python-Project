@@ -107,7 +107,11 @@ def main():
 
                 save_button = st.button("Apply Changes", type="primary")
                 if save_button:
-                    pass
+                    # pass
+                    for idx, row in edited_df.iterrows():
+                        new_category = row["Category"]
+                        if new_category == st.session_state.debits_df.at[idx, "Category"]:
+                            continue
 
 
 
